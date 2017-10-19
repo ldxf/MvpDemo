@@ -1,0 +1,126 @@
+apply plugin: 'com.android.application'
+//apply plugin: 'com.neenbedankt.android-apt'//添加apt命令
+apply plugin: 'android-apt'
+
+android {
+    compileSdkVersion 25
+    buildToolsVersion '26.0.0'
+    defaultConfig {
+        applicationId "com.example.ldk.mvpdemo"
+        minSdkVersion 19
+        targetSdkVersion 25
+        versionCode 1
+        versionName "1.0"
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        vectorDrawables.useSupportLibrary = true
+    }
+
+    lintOptions {
+        checkReleaseBuilds false
+        // Or, if you prefer, you can continue to check for errors in release builds,
+        // but continue the build even when errors are found:
+        abortOnError false
+    }
+
+//配置keystore签名
+    signingConfigs {
+        android {
+            // 签名store文件路径
+            storeFile file(KEY_PATH)
+            // 签名store文件的密码
+            storePassword KEY_PASS
+            // 别名
+            keyAlias ALIAS_NAME
+            // 别名的密码
+            keyPassword ALIASS_PASS
+            //v2签名
+//            v2SigningEnabled false
+            //v1签名
+//            v1SigningEnabled false
+        }
+    }
+
+    buildTypes {
+        release {
+            signingConfig signingConfigs.android
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+        debug {
+            signingConfig signingConfigs.android
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'//配置内容
+        }
+    }
+
+    //解决导入rxlifecycle2 编译有问题，但是运行成功
+    configurations.all {
+        resolutionStrategy.force 'com.google.code.findbugs:jsr305:3.0.1'
+    }
+
+}
+
+dependencies {
+    compile fileTree(include: ['*.jar'], dir: 'libs')
+    androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
+        exclude group: 'com.android.support', module: 'support-annotations'
+    })
+    testCompile 'junit:junit:4.12'
+
+    //noinspection GradleCompatible
+    compile 'com.android.support:appcompat-v7:25.3.1'
+    compile 'com.android.support:design:25.3.1'
+    compile 'com.android.support.constraint:constraint-layout:1.0.2'
+    //butterknife
+    compile 'com.jakewharton:butterknife:8.8.1'
+    annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
+    apt 'com.jakewharton:butterknife-compiler:8.8.1'
+    //dagger2
+    apt 'com.google.dagger:dagger-compiler:2.6'
+    //指定注解处理器
+    compile 'com.google.dagger:dagger:2.6'
+    //dagger公用api
+    provided 'org.glassfish:javax.annotation:10.0-b28'
+    //添加android缺失的部分javax注解
+    //rxjava
+    compile 'io.reactivex.rxjava2:rxjava:2.1.1'
+    compile 'io.reactivex.rxjava2:rxandroid:2.0.1'
+    //处理rxjava内存泄漏
+    compile 'com.trello.rxlifecycle2:rxlifecycle:2.0.1'
+    //      compile 'com.trello.rxlifecycle2:rxlifecycle-android:2.0.1'
+    compile 'com.trello.rxlifecycle2:rxlifecycle-components:2.0.1'
+
+    compile 'com.jakewharton.rxbinding2:rxbinding:2.0.0'
+    compile 'com.jakewharton.rxbinding2:rxbinding-support-v4:2.0.0'
+    compile 'com.jakewharton.rxbinding2:rxbinding-appcompat-v7:2.0.0'
+    compile 'com.jakewharton.rxbinding2:rxbinding-design:2.0.0'
+    compile 'com.jakewharton.rxbinding2:rxbinding-recyclerview-v7:2.0.0'
+    compile 'com.jakewharton.rxbinding2:rxbinding-leanback-v17:2.0.0'
+    //retrofit
+    compile 'com.squareup.retrofit2:retrofit:2.3.0'
+    compile 'com.squareup.retrofit2:adapter-rxjava2:2.2.0'
+    // xxx
+    compile 'com.squareup.retrofit2:converter-gson:2.1.0'
+    // okHttp
+    compile 'com.squareup.okhttp3:okhttp:3.8.1'
+    compile 'com.squareup.okhttp3:logging-interceptor:3.4.1'
+    //路由
+    compile 'com.github.mzule.activityrouter:activityrouter:1.2.2'
+    apt 'com.github.mzule.activityrouter:compiler:1.1.7'
+
+
+    compile 'com.alibaba:fastjson:1.2.39'
+
+    compile 'com.github.bumptech.glide:glide:3.7.0'
+
+    debugCompile 'com.squareup.leakcanary:leakcanary-android:1.5.4'
+    releaseCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.5.4'
+    testCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.5.4'
+
+    //recycler适配器
+    compile 'com.github.CymChad:BaseRecyclerViewAdapterHelper:2.9.24'
+
+    //viewpager-Adapter
+    compile 'com.youth.banner:banner:1.4.10'  //最新版本
+
+}
