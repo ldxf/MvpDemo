@@ -1,1 +1,1 @@
-retrofit+rxjava全家桶 的mvp开发
+retrofit+rxjava mvp
